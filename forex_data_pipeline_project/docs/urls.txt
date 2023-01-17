@@ -1,0 +1,4 @@
+https://security.google.com/settings/security/apppasswords
+
+[root@fedora airflow-section-3]# docker exec -t fa97556d93dd /bin/bash
+airflow@fa97556d93dd:/$ airflow tasks test forex_data_pipeline downloading_rates 2021-01-01
