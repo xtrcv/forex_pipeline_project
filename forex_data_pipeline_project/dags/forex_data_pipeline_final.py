@@ -44,7 +44,7 @@ def download_rates():
 with DAG(dag_id="forex_data_pipeline_final", schedule_interval="@daily", default_args=default_args, catchup=False) as dag:
 
     # Checking if forex rates are avaiable
-    # TODO: Check SSL
+    # AS OF 2023-01-17 API DOESN'T WORK.
     is_forex_rates_available = HttpSensor(
             task_id="is_forex_rates_available",
             method="GET",
@@ -55,9 +55,8 @@ with DAG(dag_id="forex_data_pipeline_final", schedule_interval="@daily", default
             timeout=20
     )
 
-    # Checking if the file containing the forex pairs we want to observe is arrived
-    # TODO: Speak about the fact that the path in connection forex_path must be specified
-    # in the extra parameter as JSON
+    # Checking if the file containing the forex pairs we want to observe is arrived.
+    # The path in connection forex_path must be specified in the extra parameter as JSON.
     is_forex_currencies_file_available = FileSensor(
             task_id="is_forex_currencies_file_available",
             fs_conn_id="forex_path",
@@ -121,17 +120,7 @@ with DAG(dag_id="forex_data_pipeline_final", schedule_interval="@daily", default
             """
             )
 
-    # Sending a notification by Slack message
-    # TODO: Improvements - add on_failure for tasks
-    # https://medium.com/datareply/integrating-slack-alerts-in-airflow-c9dcd155105
-    sending_slack_notification = SlackAPIPostOperator(
-        task_id="sending_slack",
-        token="xoxp-753801195270-740121926339-751642514144-8391b800988bed43247926b03742459e",
-        username="airflow",
-        text="DAG forex_data_pipeline: DONE",
-        channel="#airflow-exploit"
-    )
 
     is_forex_rates_available >> is_forex_currencies_file_available >> downloading_rates >> saving_rates
     saving_rates >> creating_forex_rates_table >> forex_processing 
-    forex_processing >> sending_email_notification >> sending_slack_notification
+    forex_processing >> sending_email_notification
