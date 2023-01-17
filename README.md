@@ -15,5 +15,10 @@ Download_rates() function will download forex rates from api.exchangeratesapi.io
 ## forex_data_pipeline_final DAG
 forex_data_pipeline_final dag instantiated and default_args are passed to it. schedule_interval is defined, and is quite important, because when the DAG is being run, Airflow will wait the schedule_interval amount of time before running the DAG.
 
-Two sensors - HttpSensor and FileSensor are used to check if the HTTP endpoint is available and forex rates .csv file has arrived in the defined directory.
+Two sensors - HttpSensor and FileSensor are used to check if the HTTP endpoint is available and forex rates .csv file has arrived in the defined directory. The bash operator then runs a couple of commands to create a directory and to place the .json file in it.
 
+A hive table is created.
+
+Spark operator runs as decribed in the airflow/dags/scripts/forex_processing.py script.
+
+If the DAG has run successfully until this stage, it will send an e-mail. Slack API operator can also be used to send a message on it.
