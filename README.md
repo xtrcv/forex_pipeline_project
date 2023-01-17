@@ -12,6 +12,8 @@ The default_args dictionary defines default parameters that will be used when ru
 ## Download_rates() Function
 Download_rates() function will download forex rates from api.exchangeratesapi.io. Unfortunately the API doesn't work at the moment as the website is under maintenance at the time of writing (2023-01-17).
 
+The function opens forex_currencies.csv and download the pairs of currencies that are described in the .csv
+
 ## forex_data_pipeline_final DAG
 forex_data_pipeline_final dag instantiated and default_args are passed to it. schedule_interval is defined, and is quite important, because when the DAG is being run, Airflow will wait the schedule_interval amount of time before running the DAG.
 
