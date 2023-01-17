@@ -39,7 +39,7 @@ If the DAG has run successfully until this stage, it will send an e-mail. Slack 
 
 ## Dependencies
 
->> operator is used instead of .set_downstream() to specify dependencies as it is more readable and less cluttered. 
+">>" operator is used instead of .set_downstream() to specify dependencies as it is more readable and less cluttered. 
 
 ## Best Practices and Notes
 
